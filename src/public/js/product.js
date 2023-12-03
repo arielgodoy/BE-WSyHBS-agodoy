@@ -2,21 +2,24 @@ console.log('Bienvenidos al ingreso por Websocket');
 const socket = io();
 const limit = '';
 const dataTable = $('#productTable').DataTable();
+
+console.log("Título de la página:", programa);
 //funcion que actualiza la data en pantalla
 const obtenerProductos = async () => {
-  //"pedimos la data al server por WS"
+  // "Pedimos la data al server por WS"
   socket.emit('getproducts', limit);
 
-  // esperamos la data de manera asyncrona
+  // Esperamos la data de manera asíncrona
   const dataFromServer = await new Promise(resolve => {
     socket.on('resultado.getproducts', data => resolve(data));
   });
 
-  // limpiamos la tabla
+  // Limpiamos la tabla
   dataTable.clear().draw();
 
-  // inyenctamos la data a kla table
-  dataFromServer.forEach(product => {
+  // Inyectamos la data a la tabla
+  dataFromServer.forEach(product => {  
+
     dataTable.row.add([
       product.id,
       product.title,
@@ -29,8 +32,11 @@ const obtenerProductos = async () => {
       product.thumbnail,
       '<button class="btn btn-danger eliminar-btn">Eliminar</button>'
     ]).draw();
-  });  
+  });
 };
+
+// Resto del código...
+
 
 // llamamos la funcion de datos la 1era vez
 obtenerProductos();
@@ -57,7 +63,3 @@ function remove(productData) {
   socket.emit('eliminaProducto', productData, handleResult);
 }
 
-// quedamos a la espera de algun broacast de actualizacion en el json (post,put o delete)
-socket.on('productosactualizados', data => {
-  obtenerProductos();
-});

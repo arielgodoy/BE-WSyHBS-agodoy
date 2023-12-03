@@ -22,7 +22,7 @@ app.set("views", path.resolve(__dirname + '/views'));
 // routers
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
-app.use('/product',hbsrouter);
+app.use('/',hbsrouter);
 
 const httpServer = app.listen(port, (err) => {
     if (err) throw err;
