@@ -27,8 +27,13 @@ class ProductManager {
   }
   
 
-  writeToFile() {
-    fs.writeFileSync(this.path, JSON.stringify(this.products, null, 2), 'utf8');
+  async writeToFile() {
+    try {      
+      await fs.writeFile(this.path, JSON.stringify(this.products, null, 2), 'utf8');
+      console.log('Archivo guardado con éxito.');
+    } catch (error) {
+      console.error('Error al escribir en el archivo:', error);
+    }
   }
 
   addProduct(title, description, price, thumbnail, code, stock, status, category) {

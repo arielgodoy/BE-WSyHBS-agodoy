@@ -26,8 +26,7 @@ const obtenerProductos = async () => {
       product.status,
       product.stock,
       product.category,
-      product.thumbnail,
-      '<button class="btn btn-danger eliminar-btn">Eliminar</button>'
+      product.thumbnail      
     ]).draw();
   });  
 };
