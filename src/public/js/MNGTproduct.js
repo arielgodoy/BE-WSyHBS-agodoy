@@ -1,22 +1,21 @@
 console.log('Bienvenidos al ingreso por Websocket');
 const socket = io();
 const limit = '';
-// Inicializar DataTable
 const dataTable = $('#productTable').DataTable();
-// Definir una función asincrónica para manejar la operación asíncrona
+//funcion que actualiza la data en pantalla
 const obtenerProductos = async () => {
-  // Emitir el evento getproducts al servidor
+  //"pedimos la data al server por WS"
   socket.emit('getproducts', limit);
-  // Utilizar await para esperar la respuesta del servidor
+
+  // esperamos la data de manera asyncrona
   const dataFromServer = await new Promise(resolve => {
     socket.on('resultado.getproducts', data => resolve(data));
   });
 
-
-
-  // Limpia la tabla antes de agregar los nuevos datos
+  // limpiamos la tabla
   dataTable.clear().draw();
-  // Agrega filas al DataTable basándote en los datos del WebSocket
+
+  // inyenctamos la data a kla table
   dataFromServer.forEach(product => {
     dataTable.row.add([
       product.id,
@@ -30,45 +29,35 @@ const obtenerProductos = async () => {
       product.thumbnail,
       '<button class="btn btn-danger eliminar-btn">Eliminar</button>'
     ]).draw();
-  });
-
-  console.log('DataTable actualizado correctamente.');
+  });  
 };
 
-// Llamar a la función asincrónica
+// llamamos la funcion de datos la 1era vez
 obtenerProductos();
 
-  $(document).ready(function() {
-    var dataTable = $('#productTable').DataTable();
-    
+$(document).ready(function () {
+  var dataTable = $('#productTable').DataTable();
 
-    // Evento de clic para el botón "Eliminar" en cada fila
-    $('#productTable').on('click', '.eliminar-btn', function() {
-      // Obtener la fila actual
-      console.log('Clic en el botón "Eliminar"');
-      var fila = dataTable.row($(this).parents('tr')).data();
-      let data = dataTable.row($(this).parents('tr')).data();
-      console.log(data[0]);
-      // Llamar a la función remove pasando los datos de la fila
-      remove(data[0]);     
-      
-      // Quitar la fila del DataTable
-      dataTable.row($(this).parents('tr')).remove().draw();
-    });
+  // reaccionamos al clieck de eliminar por fila
+  $('#productTable').on('click', '.eliminar-btn', function () {    
+    let data = dataTable.row($(this).parents('tr')).data();
+    // quitamos del jason pos winsocket
+    remove(data[0]);
+    // quitamos la fila para no renderizar
+    dataTable.row($(this).parents('tr')).remove().draw();
   });
+});
 
-  // Función remove para manejar la eliminación de productos
-  function remove(productData) {
-    // Callback function to handle the result
-    const handleResult = function (status) {
-      const messageText = status.message;
-      $('#result').text(messageText);
-    };
-  
-    // Emit the 'eliminaProducto' event and pass the callback function
-    socket.emit('eliminaProducto', productData, handleResult);
-  }
-  
-  socket.on('productosactualizados', data => {
-    obtenerProductos();
-  });
+
+function remove(productData) {
+  const handleResult = function (status) {
+    const messageText = status.message;
+    $('#result').text(messageText);
+  };
+  socket.emit('eliminaProducto', productData, handleResult);
+}
+
+// quedamos a la espera de algun broacast de actualizacion en el json (post,put o delete)
+socket.on('productosactualizados', data => {
+  obtenerProductos();
+});

@@ -53,5 +53,27 @@
     "stock": "1",
     "category": "1",
     "thumbnail": "1"
+  },
+  {
+    "id": 2044,
+    "title": "1",
+    "description": "1",
+    "code": "7",
+    "price": "1",
+    "status": "available",
+    "stock": "1",
+    "category": "1",
+    "thumbnail": "1"
+  },
+  {
+    "id": 2045,
+    "title": "1",
+    "description": "1",
+    "code": "8",
+    "price": "1",
+    "status": "available",
+    "stock": "1",
+    "category": "1",
+    "thumbnail": "1"
   }
 ]
