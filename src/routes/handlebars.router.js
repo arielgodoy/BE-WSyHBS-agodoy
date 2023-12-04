@@ -1,5 +1,6 @@
-import { Router } from 'express';
-const router = Router();
+//import { Router } from 'express';
+const express = require('express');
+const router = express.Router();
 router
 .get("/getall", (req, res) => {
     console.log('Renderizando .. /getall..');    
@@ -26,5 +27,6 @@ router
     });
 });
 
-export { router as default }; 
+//export { router as default }; 
+module.exports = router;
 

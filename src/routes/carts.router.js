@@ -1,8 +1,11 @@
-import { Router } from 'express';
+//import { Router } from 'express';
+const express = require('express');
 //const CartsManager = require('../managers/CartManager.js');
-import CartsManager from '../managers/CartManager.js';
+//import CartsManager from '../managers/CartManager.js';
+const CartsManager = require('../managers/CartManager.js');
+
 const cartsService = new CartsManager('./src/data/carts.json');
-const router = Router();
+const router = express.Router();
 
 
 const middle_ware = (req,res,next)=>{
@@ -96,4 +99,5 @@ const middle_ware = (req,res,next)=>{
   });
 
 
-export { router as default }; 
+//export { router as default }; 
+module.exports = router;  

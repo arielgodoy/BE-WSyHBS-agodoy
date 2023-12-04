@@ -1,7 +1,9 @@
-import { Router } from 'express';
-import ProductManager from '../managers/ProductManager.js';
+//import { Router } from 'express';
+//import ProductManager from '../managers/ProductManager.js';
+const express = require('express');
+const ProductManager = require('../managers/ProductManager.js');
 const productManager = new ProductManager('./src/data/productos.json');
-const router = Router();
+const router = express.Router();
 
 router
     .get('/', async (req, res) => {
@@ -68,6 +70,6 @@ router
     })
 
 
-export default router;
-
+//export default router;
+module.exports = router;  
 

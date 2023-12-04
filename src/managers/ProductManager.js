@@ -1,5 +1,9 @@
 
-import fs from 'fs';
+//import fs from 'fs';
+//const fs = require('fs');
+const fs = require('fs').promises;
+
+
 
 class ProductManager {
   constructor(path) {
@@ -8,33 +12,35 @@ class ProductManager {
     this.readFromFile();
   }
 
-  readFromFile() {
+  async readFromFile() {
     try {
-      const data = fs.readFileSync(this.path, 'utf8');
+      const data = await fs.readFile(this.path, 'utf8');
       this.products = JSON.parse(data);
     } catch (error) {
       if (error.code === 'ENOENT') {
         // El archivo no existe, así que lo creamos
         //console.log('Archivo no encontrado, creando uno nuevo en ' + this.path);
         this.products = [];
-        this.writeToFile();
+        await this.writeToFile(); // Usa await aquí también para asegurarte de que se complete la escritura antes de continuar
       } else {
         // Otro tipo de error
         //console.error('Error al leer el archivo ' + this.path + ':', error.message);
         this.products = [];
       }
     }
-  }
+}
+
   
 
   async writeToFile() {
-    try {      
+    try {
       await fs.writeFile(this.path, JSON.stringify(this.products, null, 2), 'utf8');
       console.log('Archivo guardado con éxito.');
     } catch (error) {
       console.error('Error al escribir en el archivo:', error);
     }
-  }
+}
+
 
   addProduct(title, description, price, thumbnail, code, stock, status, category) {
     // Validamos TODOS los campos antes de continuar... exceprto || !thumbnail
@@ -109,10 +115,13 @@ class ProductManager {
     }
   }
 
-  getProducts() {
-    this.readFromFile();    
-    return this.products;
-  }
+  async getProducts() {
+    await this.readFromFile();
+    //console.log(this.products);
+    return Promise.resolve(this.products);
+}
+
+
 
   getProductById(id) {
     this.readFromFile();
@@ -135,5 +144,6 @@ class ProductManager {
     return combinedId;
   }
 }
-export default ProductManager;
+//export default ProductManager;
 
+module.exports = ProductManager;  

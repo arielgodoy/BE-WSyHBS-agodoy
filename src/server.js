@@ -1,12 +1,20 @@
-import express from "express";
-import * as path from "path";
-import { Server } from 'socket.io';
-import { engine } from "express-handlebars";
-import __dirname from "./utils.js";
-import productRouter from './routes/products.router.js';
-import cartRouter from './routes/carts.router.js';
-import hbsrouter from './routes/handlebars.router.js'
-import ProductManager from './managers/ProductManager.js';
+// import express from "express";
+// import * as path from "path";
+// import { Server } from 'socket.io';
+// import { engine } from "express-handlebars";
+// import __dirname from "./utils.js";
+// import productRouter from './routes/products.router.js';
+// import cartRouter from './routes/carts.router.js';
+// import hbsrouter from './routes/handlebars.router.js'
+// import ProductManager from './managers/ProductManager.js';
+const express = require('express');
+const path = require("path");
+const { Server } = require('socket.io');
+const { engine } = require("express-handlebars");
+const productRouter = require('./routes/products.router.js');
+const cartRouter = require('./routes/carts.router.js');
+const hbsrouter = require('./routes/handlebars.router.js');
+const ProductManager = require('./managers/ProductManager.js');
 const productManager = new ProductManager('./src/data/productos.json');
 
 const app = express();
@@ -47,11 +55,21 @@ io.on('connection',socket=>{
         
         );
         })
-    socket.on('getproducts',limit =>{
-        console.log("Data solicitada por getProducts "+ limit);
-        let products=productManager.getProducts(parseInt(limit))        
-        socket.emit('resultado.getproducts',products);
-        });
+        socket.on('getproducts', async (limit) => {
+            console.log("Data solicitada por getProducts " + limit);
+          
+            try {
+              // Espera a que la operación asíncrona se complete
+              let products = await productManager.getProducts(parseInt(limit));
+          
+              console.log(products);
+              socket.emit('resultado.getproducts', products);
+            } catch (error) {
+              console.error('Error al obtener productos:', error);
+              socket.emit('resultado.getproducts', { error: 'Error al obtener productos' });
+            }
+          });
+          
     socket.on('eliminaProducto',id =>{
             console.log("Eliminando Producto ID = "+ id);
             let resultado=productManager.deleteProduct(id);
