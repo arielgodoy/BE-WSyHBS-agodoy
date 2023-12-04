@@ -11,17 +11,6 @@
     "thumbnail": "2"
   },
   {
-    "id": 2040,
-    "title": "1",
-    "description": "1",
-    "code": "1",
-    "price": "2",
-    "status": "available",
-    "stock": "2",
-    "category": "2",
-    "thumbnail": "2"
-  },
-  {
     "id": 2042,
     "title": "1",
     "description": "2",
@@ -33,7 +22,18 @@
     "thumbnail": "4"
   },
   {
-    "id": 2044,
+    "id": 2042,
+    "title": "2",
+    "description": "2",
+    "code": "2",
+    "price": "2",
+    "status": "available",
+    "stock": "2",
+    "category": "2",
+    "thumbnail": "2"
+  },
+  {
+    "id": 2043,
     "title": "5",
     "description": "5",
     "code": "5",

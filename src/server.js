@@ -60,9 +60,8 @@ io.on('connection',socket=>{
           
             try {
               // Espera a que la operación asíncrona se complete
-              let products = await productManager.getProducts(parseInt(limit));
-          
-              console.log(products);
+              let products = await productManager.getProducts(parseInt(limit));        
+              
               socket.emit('resultado.getproducts', products);
             } catch (error) {
               console.error('Error al obtener productos:', error);
